@@ -15,7 +15,8 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<OnSaveInterceptor>();
 builder.Services.AddDbContext<ApplicationDbContext>((sp, o) =>
 {
-   o.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))
+  // o.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))
+    o.UseInMemoryDatabase("IssueTracker")
     .AddInterceptors(sp.GetRequiredService<OnSaveInterceptor>());
 });
 
