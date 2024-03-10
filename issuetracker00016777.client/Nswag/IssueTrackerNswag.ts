@@ -16,9 +16,9 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface IIssue00016777Client {
-    createIssue(issue: IssueDTO): Observable<FileResponse>;
-    addOrDeleteIssueFromUser(addOrDeleteUserFormIssue: AddOrDeleteUserFormIssue): Observable<FileResponse>;
-    getIssueById(issueId: number | undefined): Observable<FileResponse>;
+    createIssue(issue: IssueDTO): Observable<boolean>;
+    addOrDeleteIssueFromUser(addOrDeleteUserFormIssue: AddOrDeleteUserFormIssue): Observable<boolean>;
+    getIssueById(issueId: number | undefined): Observable<IssueDTO>;
 }
 
 @Injectable({
@@ -34,7 +34,7 @@ export class Issue00016777Client implements IIssue00016777Client {
         this.baseUrl = baseUrl ?? "";
     }
 
-    createIssue(issue: IssueDTO): Observable<FileResponse> {
+    createIssue(issue: IssueDTO): Observable<boolean> {
         let url_ = this.baseUrl + "/api/Issue00016777/CreateIssue";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -46,7 +46,7 @@ export class Issue00016777Client implements IIssue00016777Client {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -57,31 +57,28 @@ export class Issue00016777Client implements IIssue00016777Client {
                 try {
                     return this.processCreateIssue(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse>;
+                    return _observableThrow(e) as any as Observable<boolean>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<FileResponse>;
+                return _observableThrow(response_) as any as Observable<boolean>;
         }));
     }
 
-    protected processCreateIssue(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreateIssue(response: HttpResponseBase): Observable<boolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -90,7 +87,7 @@ export class Issue00016777Client implements IIssue00016777Client {
         return _observableOf(null as any);
     }
 
-    addOrDeleteIssueFromUser(addOrDeleteUserFormIssue: AddOrDeleteUserFormIssue): Observable<FileResponse> {
+    addOrDeleteIssueFromUser(addOrDeleteUserFormIssue: AddOrDeleteUserFormIssue): Observable<boolean> {
         let url_ = this.baseUrl + "/api/Issue00016777/AddOrDeleteIssueFromUser";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -102,7 +99,7 @@ export class Issue00016777Client implements IIssue00016777Client {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -113,31 +110,28 @@ export class Issue00016777Client implements IIssue00016777Client {
                 try {
                     return this.processAddOrDeleteIssueFromUser(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse>;
+                    return _observableThrow(e) as any as Observable<boolean>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<FileResponse>;
+                return _observableThrow(response_) as any as Observable<boolean>;
         }));
     }
 
-    protected processAddOrDeleteIssueFromUser(response: HttpResponseBase): Observable<FileResponse> {
+    protected processAddOrDeleteIssueFromUser(response: HttpResponseBase): Observable<boolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -146,7 +140,7 @@ export class Issue00016777Client implements IIssue00016777Client {
         return _observableOf(null as any);
     }
 
-    getIssueById(issueId: number | undefined): Observable<FileResponse> {
+    getIssueById(issueId: number | undefined): Observable<IssueDTO> {
         let url_ = this.baseUrl + "/api/Issue00016777/GetIssueById?";
         if (issueId === null)
             throw new Error("The parameter 'issueId' cannot be null.");
@@ -158,7 +152,7 @@ export class Issue00016777Client implements IIssue00016777Client {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -169,31 +163,27 @@ export class Issue00016777Client implements IIssue00016777Client {
                 try {
                     return this.processGetIssueById(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse>;
+                    return _observableThrow(e) as any as Observable<IssueDTO>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<FileResponse>;
+                return _observableThrow(response_) as any as Observable<IssueDTO>;
         }));
     }
 
-    protected processGetIssueById(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetIssueById(response: HttpResponseBase): Observable<IssueDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = IssueDTO.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -204,8 +194,8 @@ export class Issue00016777Client implements IIssue00016777Client {
 }
 
 export interface IUser0001677Client {
-    createUser(userDTO: UserDTO): Observable<FileResponse>;
-    getUserById(userId: number | undefined): Observable<FileResponse>;
+    createUser(userDTO: UserDTO): Observable<boolean>;
+    getUserById(userId: number | undefined): Observable<UserDTO>;
 }
 
 @Injectable({
@@ -221,7 +211,7 @@ export class User0001677Client implements IUser0001677Client {
         this.baseUrl = baseUrl ?? "";
     }
 
-    createUser(userDTO: UserDTO): Observable<FileResponse> {
+    createUser(userDTO: UserDTO): Observable<boolean> {
         let url_ = this.baseUrl + "/api/User0001677/CreateUser";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -233,7 +223,7 @@ export class User0001677Client implements IUser0001677Client {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -244,31 +234,28 @@ export class User0001677Client implements IUser0001677Client {
                 try {
                     return this.processCreateUser(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse>;
+                    return _observableThrow(e) as any as Observable<boolean>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<FileResponse>;
+                return _observableThrow(response_) as any as Observable<boolean>;
         }));
     }
 
-    protected processCreateUser(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreateUser(response: HttpResponseBase): Observable<boolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -277,7 +264,7 @@ export class User0001677Client implements IUser0001677Client {
         return _observableOf(null as any);
     }
 
-    getUserById(userId: number | undefined): Observable<FileResponse> {
+    getUserById(userId: number | undefined): Observable<UserDTO> {
         let url_ = this.baseUrl + "/api/User0001677/GetUserById?";
         if (userId === null)
             throw new Error("The parameter 'userId' cannot be null.");
@@ -289,7 +276,7 @@ export class User0001677Client implements IUser0001677Client {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -300,31 +287,27 @@ export class User0001677Client implements IUser0001677Client {
                 try {
                     return this.processGetUserById(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse>;
+                    return _observableThrow(e) as any as Observable<UserDTO>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<FileResponse>;
+                return _observableThrow(response_) as any as Observable<UserDTO>;
         }));
     }
 
-    protected processGetUserById(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetUserById(response: HttpResponseBase): Observable<UserDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UserDTO.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -335,6 +318,7 @@ export class User0001677Client implements IUser0001677Client {
 }
 
 export class IssueDTO implements IIssueDTO {
+    id?: number;
     title?: string;
     description?: string;
     priority?: IssuePriority00016777;
@@ -351,6 +335,7 @@ export class IssueDTO implements IIssueDTO {
 
     init(_data?: any) {
         if (_data) {
+            this.id = _data["id"];
             this.title = _data["title"];
             this.description = _data["description"];
             this.priority = _data["priority"];
@@ -371,6 +356,7 @@ export class IssueDTO implements IIssueDTO {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
         data["title"] = this.title;
         data["description"] = this.description;
         data["priority"] = this.priority;
@@ -384,6 +370,7 @@ export class IssueDTO implements IIssueDTO {
 }
 
 export interface IIssueDTO {
+    id?: number;
     title?: string;
     description?: string;
     priority?: IssuePriority00016777;
@@ -399,6 +386,7 @@ export enum IssuePriority00016777 {
 }
 
 export class UserDTO implements IUserDTO {
+    id?: number;
     fullName?: string;
     userName?: string;
     birthDate?: Date | undefined;
@@ -417,6 +405,7 @@ export class UserDTO implements IUserDTO {
 
     init(_data?: any) {
         if (_data) {
+            this.id = _data["id"];
             this.fullName = _data["fullName"];
             this.userName = _data["userName"];
             this.birthDate = _data["birthDate"] ? new Date(_data["birthDate"].toString()) : <any>undefined;
@@ -435,6 +424,7 @@ export class UserDTO implements IUserDTO {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
         data["fullName"] = this.fullName;
         data["userName"] = this.userName;
         data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>undefined;
@@ -446,6 +436,7 @@ export class UserDTO implements IUserDTO {
 }
 
 export interface IUserDTO {
+    id?: number;
     fullName?: string;
     userName?: string;
     birthDate?: Date | undefined;
@@ -510,13 +501,6 @@ export interface IAddOrDeleteUserFormIssue {
     userIds?: number[];
     issueId?: number;
     isDeleted?: boolean;
-}
-
-export interface FileResponse {
-    data: Blob;
-    status: number;
-    fileName?: string;
-    headers?: { [name: string]: any };
 }
 
 export class SwaggerException extends Error {

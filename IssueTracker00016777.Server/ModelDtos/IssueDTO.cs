@@ -4,6 +4,7 @@ namespace IssueTracker00016777.ModelDtos;
 
 public class IssueDTO
 {
+  public int Id { get; set; }
   public string Title { get; set; } 
   public string Description { get; set; }
   public IssuePriority00016777 Priority { get; set; }

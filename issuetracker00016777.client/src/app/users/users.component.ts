@@ -1,14 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { Issue00016777Client, User0001677Client } from 'Nswag/IssueTrackerNswag'
+import {  Sex00016777, User0001677Client, UserDTO } from 'Nswag/IssueTrackerNswag'
+import { SelectItem } from 'primeng/api';
+
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
+  userDtos: UserDTO[] = [];
+  userSexes: SelectItem[] = [];
+  constructor(private User0001677Client: User0001677Client) 
+  { 
+    this.userSexes = [
+    {label: 'Not set', value: Sex00016777.NotSet},
+    {label: 'Man', value: Sex00016777.Man},
+    {label: 'Woman', value: Sex00016777.Woman}
+  ]
+  }
 
-  constructor(private User0001677Client: User0001677Client) { }
 
+   
   ngOnInit(): void {
     this.User0001677Client.getUserById(1).subscribe({
       next:(u) => 
@@ -18,4 +30,15 @@ export class UsersComponent implements OnInit {
     })
   }
 
+  onRowEditInit(user: UserDTO) {
+    
+}
+
+onRowEditSave(user: UserDTO) {
+    
+}
+
+onRowEditCancel(user: UserDTO, index: number) {
+   
+}
 }

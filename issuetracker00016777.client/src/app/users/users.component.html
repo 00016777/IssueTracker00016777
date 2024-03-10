@@ -1,1 +1,83 @@
-<p>users works!</p>
+<h5>Row Editing</h5>
+    <p-table [value]="userDtos" dataKey="id" editMode="row" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>FullName</th>
+                <th>UserName</th>
+                <th>Email</th>
+                <th>PhoneNumber</th>
+                <th>Sex</th>
+                <th>BirthDate</th>
+                <th style="width:8rem"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="user">
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="user.fullName">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ user.fullName }}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="user.userName" required>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ user.userName }}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="user.email" required>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{user.email}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="user.phoneNumber">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{user.phoneNumber}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                        <p-dropdown [options]="userSexes" [(ngModel)]="user.sex00016777" [style]="{'width':'100%'}"></p-dropdown>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{user.sex00016777}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="datetime" [(ngModel)]="user.birthDate"/>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{user.birthDate | date : 'dd.MM.yyyy' }}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td style="text-align:center">
+                    <!-- <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(user)" class="p-button-rounded p-button-text"></button>
+                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(user)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(user, ri)" class="p-button-rounded p-button-text p-button-danger"></button> -->
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
