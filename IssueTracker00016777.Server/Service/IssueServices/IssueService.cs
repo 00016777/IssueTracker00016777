@@ -54,7 +54,7 @@ public class IssueService(ApplicationDbContext dbContext,
         var query = dbContext.Issues.Include(x=> x.Users).AsNoTracking();
         if (!string.IsNullOrEmpty(searchByTitle))
         {
-            query = query.Where(x=> searchByTitle.Contains(x.Title, StringComparison.InvariantCultureIgnoreCase));  
+            query = query.Where(x=> searchByTitle.Contains(x.Title, StringComparison.OrdinalIgnoreCase));  
             
         }
         var result = query.ProjectTo<IssueDTO>(mapper.ConfigurationProvider)

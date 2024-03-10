@@ -7,6 +7,7 @@ import { IssuesComponent } from './issues/issues.component';
 import { UsersComponent } from './users/users.component';
 import { RouterModule, Routes } from '@angular/router';
 import {MenubarModule} from 'primeng/menubar';
+import { API_BASE_URL } from 'Nswag/IssueTrackerNswag';
 const routes : Routes = [
    {
       path:'issues',
@@ -31,7 +32,9 @@ const routes : Routes = [
     RouterModule.forRoot(routes),
     MenubarModule
   ],
-  providers: [],
+  providers: [
+    {provide: API_BASE_URL, useValue : 'https://localhost:7069'}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

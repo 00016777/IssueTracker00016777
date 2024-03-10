@@ -9,11 +9,11 @@ namespace IssueTracker00016777.Controllers;
 public class User0001677Controller(IUserService userService) : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult> CreateUser(UserDTO userDTO, CancellationToken cancellationToken)
-           => Ok(await userService.CreateUserAsync(userDTO, cancellationToken));
+    public async Task<bool> CreateUser(UserDTO userDTO, CancellationToken cancellationToken)
+           => await userService.CreateUserAsync(userDTO, cancellationToken);
     [HttpGet] 
-    public async Task<ActionResult> GetUserById(int userId, CancellationToken cancellationToken)
-        => Ok(await userService.GetUserByIdAsync(userId, cancellationToken));   
+    public async Task<UserDTO> GetUserById(int userId, CancellationToken cancellationToken)
+        => await userService.GetUserByIdAsync(userId, cancellationToken);   
 
 
 

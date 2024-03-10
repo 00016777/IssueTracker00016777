@@ -10,16 +10,16 @@ public class Issue00016777Controller(IIssueService issueService) : ControllerBas
 {
 
     [HttpPost]
-    public async Task<ActionResult> CreateIssue(IssueDTO issue, CancellationToken token)
-        => Ok(await issueService.CreateIssueAsync(issue, token));
+    public async Task<bool> CreateIssue(IssueDTO issue, CancellationToken token)
+        => await issueService.CreateIssueAsync(issue, token);
 
     [HttpPost]
-    public async Task<ActionResult> AddOrDeleteIssueFromUser(AddOrDeleteUserFormIssue addOrDeleteUserFormIssue, CancellationToken token)
-        => Ok(await issueService.AddOrRemoveUsersToIssues(addOrDeleteUserFormIssue, token));
+    public async Task<bool> AddOrDeleteIssueFromUser(AddOrDeleteUserFormIssue addOrDeleteUserFormIssue, CancellationToken token)
+        => await issueService.AddOrRemoveUsersToIssues(addOrDeleteUserFormIssue, token);
 
     [HttpGet]
-    public async Task<ActionResult> GetIssueById(int issueId, CancellationToken token)
-        => Ok(await issueService.GetIssueByIdAsync(issueId, token));
+    public async Task<IssueDTO> GetIssueById(int issueId, CancellationToken token)
+        => await issueService.GetIssueByIdAsync(issueId, token);
 
     
 }
