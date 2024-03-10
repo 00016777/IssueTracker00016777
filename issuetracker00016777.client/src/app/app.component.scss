@@ -1,0 +1,57 @@
+﻿:host {
+    .navbar 
+    {
+        width:100%;
+        height: 70px;
+        background-color: rgb(6, 0, 39);
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        align-items: center;
+        .logo
+        {
+            color: azure;
+            justify-self: self-start;
+        }
+        ul 
+        {
+            display: flex;
+            list-style: none;
+            gap: 10px;
+            li 
+            {
+                a 
+                {
+                    text-decoration: none;
+                    color: azure;
+                    font-size: larger;
+                    transition: ease all .4ms;
+                    &:hover
+                    {
+                        color: brown;
+                    }
+                }
+            }
+        }
+    }
+
+
+    .footer
+    {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: azure;
+        flex-direction: row;
+        background-color: rgb(6, 0, 39);
+    }
+    
+}   
+.active-link
+{
+    color: rgb(7, 193, 240) !important;
+}
