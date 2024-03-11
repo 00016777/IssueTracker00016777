@@ -1,23 +1,27 @@
 ﻿using IssueTracker00016777.ModelDtos;
+using IssueTracker00016777.Server.Controllers;
 using IssueTracker00016777.Service.UserServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IssueTracker00016777.Controllers;
-[Route("api/[controller]/[action]")]
-[ApiController]
-public class User0001677Controller(IUserService userService) : ControllerBase
+public class User0001677Controller : ApiBaseController
 {
-    [HttpPost]
-    public async Task<bool> CreateUser(UserDTO userDTO, CancellationToken cancellationToken)
-           => await userService.CreateUserAsync(userDTO, cancellationToken);
     [HttpGet] 
     public async Task<UserDTO> GetUserById(int userId, CancellationToken cancellationToken)
-        => await userService.GetUserByIdAsync(userId, cancellationToken);   
+        => await userService.GetUserByIdAsync(userId, cancellationToken);
 
+    [HttpGet]
+    public async Task<List<UserDTO>> GetAllUsers(string? searchText, CancellationToken cancellationToken)
+        => await userService.GetAllUsersAsync(searchText, cancellationToken);
 
+    [HttpDelete]
+    public async Task<bool> DeleleUserById(int userId, CancellationToken cancellationToken)
+        => await userService.DeleteUserByIdAsync(userId, cancellationToken);
 
-
+    [HttpPost]
+    public async Task<bool> CreateOrUpdateUser(UserDTO userDTO, CancellationToken cancellationToken)
+        => await userService.CreateOrUpdateUserAsync(userDTO, cancellationToken);   
 
     
 }

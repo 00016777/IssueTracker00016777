@@ -6,18 +6,18 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/api/Issue00016777/CreateIssue": {
+    "/api/Issue00016777/CreateOrUpdateIssue": {
       "post": {
         "tags": [
           "Issue00016777"
         ],
-        "operationId": "Issue00016777_CreateIssue",
+        "operationId": "Issue00016777_CreateOrUpdateIssue",
         "requestBody": {
           "x-name": "issue",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/IssueDTO"
+                "$ref": "#/components/schemas/IssueCreateOrUpdateDto"
               }
             }
           },
@@ -101,24 +101,23 @@
         }
       }
     },
-    "/api/User0001677/CreateUser": {
-      "post": {
+    "/api/Issue00016777/DeleteIssueById": {
+      "delete": {
         "tags": [
-          "User0001677"
+          "Issue00016777"
         ],
-        "operationId": "User0001677_CreateUser",
-        "requestBody": {
-          "x-name": "userDTO",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserDTO"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
+        "operationId": "Issue00016777_DeleteIssueById",
+        "parameters": [
+          {
+            "name": "issueId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -126,6 +125,40 @@
               "application/json": {
                 "schema": {
                   "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Issue00016777/GetAllIssues": {
+      "get": {
+        "tags": [
+          "Issue00016777"
+        ],
+        "operationId": "Issue00016777_GetAllIssues",
+        "parameters": [
+          {
+            "name": "filterBytitle",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IssueDTO"
+                  }
                 }
               }
             }
@@ -163,10 +196,164 @@
           }
         }
       }
+    },
+    "/api/User0001677/GetAllUsers": {
+      "get": {
+        "tags": [
+          "User0001677"
+        ],
+        "operationId": "User0001677_GetAllUsers",
+        "parameters": [
+          {
+            "name": "searchText",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User0001677/DeleleUserById": {
+      "delete": {
+        "tags": [
+          "User0001677"
+        ],
+        "operationId": "User0001677_DeleleUserById",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User0001677/CreateOrUpdateUser": {
+      "post": {
+        "tags": [
+          "User0001677"
+        ],
+        "operationId": "User0001677_CreateOrUpdateUser",
+        "requestBody": {
+          "x-name": "userDTO",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "IssueCreateOrUpdateDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "priority": {
+            "$ref": "#/components/schemas/IssuePriority00016777"
+          }
+        }
+      },
+      "IssuePriority00016777": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "None",
+          "Low",
+          "Medium",
+          "High",
+          "VerHigh"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "AddOrDeleteUserFormIssue": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "issueId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isDeleted": {
+            "type": "boolean"
+          }
+        }
+      },
       "IssueDTO": {
         "type": "object",
         "additionalProperties": false,
@@ -192,24 +379,6 @@
             }
           }
         }
-      },
-      "IssuePriority00016777": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "None",
-          "Low",
-          "Medium",
-          "High",
-          "VerHigh"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ]
       },
       "UserDTO": {
         "type": "object",
@@ -256,26 +425,6 @@
           1,
           2
         ]
-      },
-      "AddOrDeleteUserFormIssue": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "userIds": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          "issueId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          }
-        }
       }
     }
   }

@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using IssueTracker00016777.Data;
 using IssueTracker00016777.ModelDtos;
 using IssueTracker00016777.Models;
+using IssueTracker00016777.Server.ModelDtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace IssueTracker00016777.Service.IssueServices;
@@ -34,12 +35,30 @@ public class IssueService(ApplicationDbContext dbContext,
 
     }
 
-    public async Task<bool> CreateIssueAsync(IssueDTO issueDTO, CancellationToken token = default)
+
+    public async Task<bool> CreateOrUpdateIssueAsync(IssueCreateOrUpdateDto issueCreateOrUpdateDto, CancellationToken token = default)
     {
-        var mappedIssue = mapper.Map<Issue00016777>(issueDTO);
-        await dbContext.Issues.AddAsync(mappedIssue, token);
+        if(issueCreateOrUpdateDto == null) return false;
+       
+        if(issueCreateOrUpdateDto.Id == 0)
+        {
+            var mappedIssue = mapper.Map<Issue00016777>(issueCreateOrUpdateDto);
+            await dbContext.Issues.AddAsync(mappedIssue, token);
+        }
+        else
+        {
+            var foundIssue = await dbContext.Issues.FindAsync(issueCreateOrUpdateDto.Id, token);
+            if (foundIssue == null) return false;
+
+            foundIssue.Title = issueCreateOrUpdateDto.Title;
+            foundIssue.Priority = issueCreateOrUpdateDto.Priority;
+            foundIssue.Description = issueCreateOrUpdateDto.Description;
+            dbContext.Issues.Update(foundIssue);
+        }
         return await dbContext.SaveChangesAsync(token) > 0;
     }
+
+  
 
     public async Task<bool> DeleteIssueByIdAsync(int IssueId, CancellationToken token = default)
     {
@@ -68,15 +87,5 @@ public class IssueService(ApplicationDbContext dbContext,
         var entity = await dbContext.Issues.Include(x=> x.Users).SingleOrDefaultAsync(x=> x.Id == IssueId, token);
 
         return mapper.Map<IssueDTO>(entity);        
-    }
-
-    public async Task<bool> UpdateIssueAsync(int IssueId, IssueDTO issueDTO, CancellationToken token = default)
-    {
-        var entity = await dbContext.Issues.FindAsync(IssueId, token);
-        if(entity is null) return false;    
-        entity.Title = issueDTO.Title;
-        entity.Description = issueDTO.Description;  
-        return await dbContext.SaveChangesAsync(token) > 0;
-
     }
 }

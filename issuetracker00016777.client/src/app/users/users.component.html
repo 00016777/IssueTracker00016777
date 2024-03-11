@@ -1,5 +1,5 @@
-<h5>Row Editing</h5>
-    <p-table [value]="userDtos" dataKey="id" editMode="row" responsiveLayout="scroll">
+<p-toast></p-toast>
+<p-table #userTable [value]="userDtos" dataKey="id" editMode="row" responsiveLayout="stack">
         <ng-template pTemplate="header">
             <tr>
                 <th>FullName</th>
@@ -8,6 +8,7 @@
                 <th>PhoneNumber</th>
                 <th>Sex</th>
                 <th>BirthDate</th>
+                <th ><button (click)="addNewUserTest()" class="addUserBtn">Create User</button></th>
                 <th style="width:8rem"></th>
             </tr>
         </ng-template>
@@ -66,7 +67,7 @@
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <input pInputText type="datetime" [(ngModel)]="user.birthDate"/>
+                            <p-calendar [(ngModel)]="user.birthDate"></p-calendar>
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{user.birthDate | date : 'dd.MM.yyyy' }}
@@ -74,9 +75,10 @@
                     </p-cellEditor>
                 </td>
                 <td style="text-align:center">
-                    <!-- <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(user)" class="p-button-rounded p-button-text"></button>
+                    <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(user)" class="p-button-rounded p-button-text"></button>
                     <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(user)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(user, ri)" class="p-button-rounded p-button-text p-button-danger"></button> -->
+                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(user, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="deleteUser(user)"></button>
                 </td>
             </tr>
         </ng-template>

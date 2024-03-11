@@ -1,0 +1,27 @@
+:host ::ng-deep .p-cell-editing {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+:host 
+{
+    .addUserBtn
+    {
+        padding: 10px;
+        border-radius: 10px;
+        background-color: rgb(3, 255, 234);
+        border: none;
+        color: rgb(0, 34, 31);
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        transition: all ease .4ms;
+        &:hover{
+            background-color:rgb(0, 34, 31);
+            color: rgb(3, 255, 234);
+
+        }
+        
+    }
+}
+:host ::ng-deep .p-calendar .p-inputtext
+{
+    width: 270px !important;
+}

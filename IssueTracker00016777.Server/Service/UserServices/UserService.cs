@@ -20,7 +20,7 @@ public class UserService(ApplicationDbContext dbContext,
     public async Task<bool> DeleteUserByIdAsync(int UserId, CancellationToken token = default)
     {
         var foundUser = await dbContext.Users.FindAsync(UserId, token);
-        if (foundUser != null) return false;
+        if (foundUser == null) return false;
         dbContext.Users.Remove(foundUser);
         return await dbContext.SaveChangesAsync(token) > 0;
     }
@@ -44,18 +44,30 @@ public class UserService(ApplicationDbContext dbContext,
         return mapper.Map<UserDTO>(foundUser);
     }
 
-    public async Task<bool> UpdateUserAsync(int UserId, UserDTO userDTO, CancellationToken token = default)
+    public async Task<bool> CreateOrUpdateUserAsync(UserDTO userDTO, CancellationToken token = default)
     {
-        var foundUser = await dbContext.Users.FindAsync(UserId, token);
-        if(foundUser is null) return false;
 
-        foundUser.Email = userDTO.Email;
-        foundUser.PhoneNumber = userDTO.PhoneNumber;
-        foundUser.UserName = userDTO.UserName;
-        foundUser.FullName = userDTO.FullName;
-        foundUser.Sex00016777 = userDTO.Sex00016777;
-        foundUser.BirthDate = userDTO.BirthDate;
-        dbContext.Users.Update(foundUser);
+        if (userDTO is null) return false;
+
+        if(userDTO.Id == 0)
+        {
+           var mappedUser = mapper.Map<User00016777>(userDTO);
+           await dbContext.Users.AddAsync(mappedUser, token);
+ 
+        }
+        else
+        {
+            var foundUser = await dbContext.Users.FindAsync(userDTO.Id, token);
+            if(foundUser is null) return false;
+
+            foundUser.Email = userDTO.Email;
+            foundUser.PhoneNumber = userDTO.PhoneNumber;
+            foundUser.UserName = userDTO.UserName;
+            foundUser.FullName = userDTO.FullName;
+            foundUser.Sex00016777 = userDTO.Sex00016777;
+            foundUser.BirthDate = userDTO.BirthDate;
+            dbContext.Users.Update(foundUser);
+        }
 
         return await dbContext.SaveChangesAsync(token) > 0;
     }

@@ -9,7 +9,14 @@ import {MenubarModule} from 'primeng/menubar';
 import { API_BASE_URL } from 'Nswag/IssueTrackerNswag';
 import {TableModule} from 'primeng/table';
 import {DropdownModule} from 'primeng/dropdown';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import {ProgressBarModule} from 'primeng/progressbar';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 const routes : Routes = [
    {
       path:'issues',
@@ -31,14 +38,21 @@ const routes : Routes = [
   imports: [
     BrowserModule, 
     HttpClientModule,
+    BrowserAnimationsModule,
     FormsModule,
     RouterModule.forRoot(routes),
     MenubarModule,
     TableModule,
-    DropdownModule
+    DropdownModule,
+    InputTextModule,
+    ProgressBarModule,
+    ButtonModule,
+    CalendarModule,
+    ToastModule
   ],
   providers: [
-    {provide: API_BASE_URL, useValue : 'https://localhost:7069'}
+    {provide: API_BASE_URL, useValue : 'https://localhost:7069'},
+    MessageService
   ],
   bootstrap: [AppComponent]
 })
