@@ -1,0 +1,16 @@
+:host {
+    .issues
+    {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 20px;
+
+        .issue
+        {
+            width: 200px;
+            height: 350px;
+            border-radius: 10px;
+        }
+    }
+}

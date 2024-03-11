@@ -90,4 +90,9 @@ export class UsersComponent implements OnInit {
                             }
                            })
   }
+
+  getSexType(sexType: Sex00016777)
+  {
+    return this.userSexes.find(x=> x.value == sexType)?.label;
+  }
 }
