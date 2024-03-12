@@ -28,12 +28,21 @@ export class IssuesComponent implements OnInit {
   {
     switch(issuePriority)
     {
-       case IssuePriority00016777.None : 'white';break;
-       case IssuePriority00016777.Low : 'yellow';break;
-       case IssuePriority00016777.Medium: 'orange';break;
-       case IssuePriority00016777.High: 'orangered'; break;
-       case IssuePriority00016777.VerHigh: 'red'; break;
-       default: 'white';break;
+       case IssuePriority00016777.None : return 'white';break;
+       case IssuePriority00016777.Low : return'yellow';break;
+       case IssuePriority00016777.Medium: return 'orange';break;
+       case IssuePriority00016777.High:return 'orangered'; break;
+       case IssuePriority00016777.VerHigh:return 'red'; break;
+       default:return 'white';break;
     }
+  }
+  getPriorityName(priority?: IssuePriority00016777)
+  {
+    return IssuePriority00016777[priority?? IssuePriority00016777.None];
+  }
+
+  getNameOfUsers(issue?: IssueDTO)
+  {
+     return issue?.users?.map(u => u.userName).join(",");
   }
 }

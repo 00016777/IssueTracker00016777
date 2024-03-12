@@ -654,6 +654,8 @@ export class IssueDTO implements IIssueDTO {
     title?: string;
     description?: string;
     priority?: IssuePriority00016777;
+    createdDate?: Date;
+    updateDate?: Date;
     users?: UserDTO[] | undefined;
 
     constructor(data?: IIssueDTO) {
@@ -671,6 +673,8 @@ export class IssueDTO implements IIssueDTO {
             this.title = _data["title"];
             this.description = _data["description"];
             this.priority = _data["priority"];
+            this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>undefined;
+            this.updateDate = _data["updateDate"] ? new Date(_data["updateDate"].toString()) : <any>undefined;
             if (Array.isArray(_data["users"])) {
                 this.users = [] as any;
                 for (let item of _data["users"])
@@ -692,6 +696,8 @@ export class IssueDTO implements IIssueDTO {
         data["title"] = this.title;
         data["description"] = this.description;
         data["priority"] = this.priority;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["updateDate"] = this.updateDate ? this.updateDate.toISOString() : <any>undefined;
         if (Array.isArray(this.users)) {
             data["users"] = [];
             for (let item of this.users)
@@ -706,6 +712,8 @@ export interface IIssueDTO {
     title?: string;
     description?: string;
     priority?: IssuePriority00016777;
+    createdDate?: Date;
+    updateDate?: Date;
     users?: UserDTO[] | undefined;
 }
 

@@ -48,6 +48,15 @@
         color: azure;
         flex-direction: row;
         background-color: rgb(6, 0, 39);
+        a{
+            color: azure;
+            font-size: larger;
+            font-weight: 600;
+            transition: all ease .4ms;
+            &:hover{
+                color: aquamarine;
+            }
+        }
     }
     
 }   

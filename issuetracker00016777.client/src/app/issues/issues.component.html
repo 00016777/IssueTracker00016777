@@ -1,6 +1,19 @@
 <div class="issues">
-    <div [ngStyle]="{'border': '2px solid' + getColorIssuePriority(issue.priority)}" *ngFor="let issue of issues"  class="issue">
-        
-    </div>
+    <ng-container  *ngFor="let issue of issues">
+        <div [ngStyle]="{'box-shadow': '0px 10px 15px -5px '+ getColorIssuePriority(issue.priority)}"   class="issue">
+            <div class="priority" [style.backgroundColor]="getColorIssuePriority(issue.priority)">
+                <h2>Priority: {{ getPriorityName(issue.priority) }}</h2>
+            </div>
+            <h1>{{ issue.title }}</h1>
+            <h3 style="color: rgb(53, 53, 53);">{{ issue.description }}</h3>
+            <h4 style="color: rgb(88, 88, 88); text-overflow: ellipsis;">
+                {{ getNameOfUsers(issue) }}
+            </h4>
+            <div class="updatedTime">
+                <h4 align="right">{{ issue.updateDate?? issue.createdDate | date: 'dd.MM.yyyy' }}</h4>
+            </div>
+        </div>
+    </ng-container>
+   
 </div>
 

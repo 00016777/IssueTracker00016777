@@ -371,6 +371,14 @@
           "priority": {
             "$ref": "#/components/schemas/IssuePriority00016777"
           },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
           "users": {
             "type": "array",
             "nullable": true,

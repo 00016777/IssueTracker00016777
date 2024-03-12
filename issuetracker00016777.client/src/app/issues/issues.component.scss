@@ -5,12 +5,42 @@
         flex-direction: row;
         flex-wrap: wrap;
         gap: 20px;
+        padding: 20px;
 
         .issue
         {
-            width: 200px;
+            width: 300px;
             height: 350px;
             border-radius: 10px;
+            transition: all ease .1s;
+            padding: 10px;
+            display: flex;
+           justify-content: flex-start;
+            flex-direction: column;
+            background-color: rgb(232, 248, 247);
+            &:hover{
+                transform: scale(1.1);
+                cursor: pointer;
+            }
+
+           .priority
+           {
+                height: fit-content;
+                padding: 5px;
+                border-radius: 10px; 
+                width: 100%;
+           }
+
+           .updatedTime
+           {
+               
+                height: 10px;
+                width: 100%;
+                padding-bottom: 20px;
+               border-top: 2px solid black;
+               margin-top: auto;
+           }
         }
     }
+   
 }
