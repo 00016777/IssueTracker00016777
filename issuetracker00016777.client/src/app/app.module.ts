@@ -10,14 +10,19 @@ import { API_BASE_URL } from 'Nswag/IssueTrackerNswag';
 import {TableModule} from 'primeng/table';
 import {DropdownModule} from 'primeng/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import {ProgressBarModule} from 'primeng/progressbar';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { IssueDetailsComponent } from './issues/issue-details/issue-details.component';
+import { CommonModule } from '@angular/common';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MaterialExampleModule } from './material.example.module';
 
 const routes : Routes = [
    {
@@ -36,6 +41,7 @@ const routes : Routes = [
     AppComponent,
     IssuesComponent,
     UsersComponent,
+    IssueDetailsComponent,
   ],
   imports: [
     BrowserModule, 
@@ -50,12 +56,21 @@ const routes : Routes = [
     ProgressBarModule,
     ButtonModule,
     CalendarModule,
-    ToastModule
+    ToastModule,
+    MatDialogModule,
+    CommonModule,
+    MatNativeDateModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MaterialExampleModule,
+    MatNativeDateModule,
   ],
   providers: [
     {provide: API_BASE_URL, useValue : 'https://localhost:7069'},
-    MessageService
+    MessageService,
+    MatDialog
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent ]
 })
 export class AppModule { }

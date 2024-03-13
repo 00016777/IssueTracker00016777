@@ -1,0 +1,29 @@
+
+<mat-dialog-content class="mat-typography">
+    <div class="mat-dialog-inner">
+        <button mat-dialog-close class="close-button">Cancel</button>
+        <form class="issue-form" [formGroup]="issueForm" (ngSubmit)="saveIssue()">
+            <mat-form-field appearance="outline">
+                <mat-label>Title: </mat-label>
+                <input matInput formControlName="title">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Priority</mat-label>
+                <mat-select formControlName="priority">
+                   <mat-option [value]="priority" *ngFor="let priority of service.getPriorityValues">
+                        {{ service.getPriorityName(+priority) }}
+                   </mat-option>    
+                </mat-select>
+            </mat-form-field>
+        </form>
+        <div class="actions">
+            <button (click)="editIssue()" mat-button>Edit</button>
+            <button mat-button>Delete</button>
+        </div>
+    </div>
+</mat-dialog-content>
+

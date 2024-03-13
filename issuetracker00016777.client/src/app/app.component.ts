@@ -7,18 +7,4 @@ import {MenuItem} from 'primeng/api';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent   {
-  items:MenuItem[] = [];
-
-  constructor() {
-    this.items = [
-      
-
-    ];
-
-  }
-
-  
-
- 
-}
+export class AppComponent   {}
