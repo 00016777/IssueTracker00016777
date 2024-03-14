@@ -46,7 +46,7 @@ export class IssueService {
      
     );
   }
-
+  
   SelectedUserLoad()
   {
     this.userDtos.forEach(u => 

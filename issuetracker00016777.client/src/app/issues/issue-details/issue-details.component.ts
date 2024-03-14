@@ -72,7 +72,6 @@ export class IssueDetailsComponent implements OnInit {
                           this.messageService.add({severity:'error', summary: 'Error', detail:'Something went wrong!'});
                         }
                       }});
-      this.service.loadUsers();
       this.issueDetailsDialog.close();
   }
 
