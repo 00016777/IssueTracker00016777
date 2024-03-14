@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IssueService } from '../issue.service';
 import { FormGroup, FormControl } from '@angular/forms';
-import { IssuePriority00016777 } from 'Nswag/IssueTrackerNswag';
+import { AddOrDeleteUserFormIssue, Issue00016777Client, IssueDTO, IssuePriority00016777, User0001677Client, UserDTO } from 'Nswag/IssueTrackerNswag';
+import { MatSelectionList } from '@angular/material/list';
+import { MessageService } from 'primeng/api';
+import { MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-issue-details',
   templateUrl: './issue-details.component.html',
@@ -10,6 +13,7 @@ import { IssuePriority00016777 } from 'Nswag/IssueTrackerNswag';
 export class IssueDetailsComponent implements OnInit {
 
   formIsdisabled = true;
+  selectedUserIds: number[] = [];
   issueForm = new FormGroup({
     id: new FormControl(),
     title: new FormControl(),
@@ -18,30 +22,66 @@ export class IssueDetailsComponent implements OnInit {
     users: new FormControl()
   })
 
-  constructor(public service: IssueService) {
+  constructor(public service: IssueService,
+              private issueClient : Issue00016777Client,
+              private messageService: MessageService,
+              private issueDetailsDialog: MatDialogRef<IssueDetailsComponent>) 
+  {
     this.issueForm.patchValue(this.service.issueDataTransfer);
-    this.issueForm.disable();
-
-    
+    this.issueForm.disable();    
   }
 
+  
   ngOnInit(): void {
-    console.log(this.issueForm);
-
-    const priority: keyof typeof IssuePriority00016777 = 'None';
-
-
-   
   }
 
 
   saveIssue()
   {
-
+    this.issueClient.createOrUpdateIssue(this.issueForm.value as IssueDTO)
+                    .subscribe(
+                    {
+                      next:comingIssueId =>
+                      {
+                        if(comingIssueId > 0)
+                        {
+                          this.service.loadIssues();
+                          this.messageService.add({severity:'success', summary: 'Success', detail:'Issue success saved'});
+                          this.issueClient
+                          .addOrDeleteIssueFromUser({userIds: this.selectedUserIds, issueId: comingIssueId} as AddOrDeleteUserFormIssue)
+                          .subscribe(
+                            {
+                              next: usersIsSaved =>
+                              {
+                                if(usersIsSaved)
+                                {
+                                  this.messageService.add({severity:'success', summary: 'Success', detail:'Users saved to issue'});
+                                  
+                                }
+                                else 
+                                {
+                                  this.messageService.add({severity:'error', summary: 'Error', detail:'Something went wrong!'});
+                                }
+                                 
+                              }
+                            }
+                          )
+                        }
+                        else 
+                        {
+                          this.messageService.add({severity:'error', summary: 'Error', detail:'Something went wrong!'});
+                        }
+                      }});
+      this.service.loadUsers();
+      this.issueDetailsDialog.close();
   }
+
+
+  
 
   editIssue()
   {
     this.issueForm.enable();
   }
+  
 }

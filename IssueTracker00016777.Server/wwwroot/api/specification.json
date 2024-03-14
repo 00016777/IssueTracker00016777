@@ -30,7 +30,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "boolean"
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
@@ -348,9 +349,6 @@
           "issueId": {
             "type": "integer",
             "format": "int32"
-          },
-          "isDeleted": {
-            "type": "boolean"
           }
         }
       },

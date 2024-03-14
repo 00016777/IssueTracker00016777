@@ -14,23 +14,17 @@ import { IssueService } from './issue.service';
 })
 export class IssuesComponent implements OnInit {
 
-  issues: IssueDTO[] = [];
-  constructor(private issueClient: Issue00016777Client,
-              private messageService: MessageService,
-              private service: IssueService,
-              private matDialog: MatDialog)
+  
+  constructor(private messageService: MessageService,
+              public service: IssueService,
+              private matDialog: MatDialog,
+              private issueClient: Issue00016777Client)
               { 
               }
 
   ngOnInit(): void {
-    this.loadIssues();
-  }
-
-
-  loadIssues()
-  {
-    this.issueClient.getAllIssues('')
-                    .subscribe(comingIssues => this.issues = comingIssues);
+    this.service.loadIssues();
+    this.service.loadUsers();
   }
 
   getColorIssuePriority(issuePriority?: IssuePriority00016777)
@@ -55,24 +49,27 @@ export class IssuesComponent implements OnInit {
      return issue?.users?.map(u => u.userName).join(", ");
   }
 
-  openIssueDetails(issue: IssueDTO)
+  openIssueDetails(issueId?: number)
   {
-    this.service.issueDataTransfer = issue;
-    if(this.service.issueDetailsIsClosed)
-    {
-      const dialog = this.matDialog.open(IssueDetailsComponent,
-        {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '70%',
-          width: '70%',
-          disableClose: true,
-  
-        });
-      dialog.afterOpened().subscribe(()=> this.service.issueDetailsIsClosed = false);
+    this.issueClient.getIssueById(issueId).subscribe({
+      next:(issue) => 
+      {
+        this.service.issueDataTransfer = issue;
+        this.service.SelectedUserLoad();
+        const dialog = this.matDialog.open(IssueDetailsComponent,
+          {
+            maxWidth: '100vw',
+            maxHeight: '100vh',
+            height: '70%',
+            width: '70%',
+            panelClass: 'mat-border',
+            disableClose: true
+          });
+      }
 
-      dialog.afterClosed().subscribe(()=> this.service.issueDetailsIsClosed = true);
-    }
+
+    })
+    
 
    
   }

@@ -16,7 +16,7 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface IIssue00016777Client {
-    createOrUpdateIssue(issue: IssueCreateOrUpdateDto): Observable<boolean>;
+    createOrUpdateIssue(issue: IssueCreateOrUpdateDto): Observable<number>;
     addOrDeleteIssueFromUser(addOrDeleteUserFormIssue: AddOrDeleteUserFormIssue): Observable<boolean>;
     getIssueById(issueId: number | undefined): Observable<IssueDTO>;
     deleteIssueById(issueId: number | undefined): Observable<boolean>;
@@ -36,7 +36,7 @@ export class Issue00016777Client implements IIssue00016777Client {
         this.baseUrl = baseUrl ?? "";
     }
 
-    createOrUpdateIssue(issue: IssueCreateOrUpdateDto): Observable<boolean> {
+    createOrUpdateIssue(issue: IssueCreateOrUpdateDto): Observable<number> {
         let url_ = this.baseUrl + "/api/Issue00016777/CreateOrUpdateIssue";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -59,14 +59,14 @@ export class Issue00016777Client implements IIssue00016777Client {
                 try {
                     return this.processCreateOrUpdateIssue(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<boolean>;
+                    return _observableThrow(e) as any as Observable<number>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<boolean>;
+                return _observableThrow(response_) as any as Observable<number>;
         }));
     }
 
-    protected processCreateOrUpdateIssue(response: HttpResponseBase): Observable<boolean> {
+    protected processCreateOrUpdateIssue(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -600,7 +600,6 @@ export enum IssuePriority00016777 {
 export class AddOrDeleteUserFormIssue implements IAddOrDeleteUserFormIssue {
     userIds?: number[];
     issueId?: number;
-    isDeleted?: boolean;
 
     constructor(data?: IAddOrDeleteUserFormIssue) {
         if (data) {
@@ -619,7 +618,6 @@ export class AddOrDeleteUserFormIssue implements IAddOrDeleteUserFormIssue {
                     this.userIds!.push(item);
             }
             this.issueId = _data["issueId"];
-            this.isDeleted = _data["isDeleted"];
         }
     }
 
@@ -638,7 +636,6 @@ export class AddOrDeleteUserFormIssue implements IAddOrDeleteUserFormIssue {
                 data["userIds"].push(item);
         }
         data["issueId"] = this.issueId;
-        data["isDeleted"] = this.isDeleted;
         return data;
     }
 }
@@ -646,7 +643,6 @@ export class AddOrDeleteUserFormIssue implements IAddOrDeleteUserFormIssue {
 export interface IAddOrDeleteUserFormIssue {
     userIds?: number[];
     issueId?: number;
-    isDeleted?: boolean;
 }
 
 export class IssueDTO implements IIssueDTO {

@@ -10,7 +10,7 @@ public class Issue00016777Controller: ApiBaseController
 {
 
     [HttpPost]
-    public async Task<bool> CreateOrUpdateIssue(IssueCreateOrUpdateDto issue, CancellationToken token)
+    public async Task<int> CreateOrUpdateIssue(IssueCreateOrUpdateDto issue, CancellationToken token)
         => await issueService.CreateOrUpdateIssueAsync(issue, token);
 
     [HttpPost]

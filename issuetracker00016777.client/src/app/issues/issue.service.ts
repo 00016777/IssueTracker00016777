@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { IssueDTO, IssuePriority00016777 } from 'Nswag/IssueTrackerNswag';
+import { Issue00016777Client, IssueDTO, IssuePriority00016777, User0001677Client, UserDTO } from 'Nswag/IssueTrackerNswag';
 import { IssueDetailsComponent } from './issue-details/issue-details.component';
 
 @Injectable({
@@ -8,10 +8,14 @@ import { IssueDetailsComponent } from './issue-details/issue-details.component';
 })
 export class IssueService {
 
-  issueDataTransfer!: IssueDTO;
+  issueDataTransfer: IssueDTO = {} as IssueDTO;
+  issues: IssueDTO[] = [];
   issueDetailsIsClosed = true;
-  
-  constructor() { }
+  userDtos: UserDTO[] = [];
+  selectedUsersDict: { [key: number] : boolean | undefined} = {};
+
+  constructor(private user0001677Client: User0001677Client, private issueClient: Issue00016777Client) 
+  { }
 
 
   get getPriorityKeys()
@@ -28,6 +32,34 @@ export class IssueService {
   {
     return Object.keys(IssuePriority00016777).filter(p => isNaN(Number(p)))[priority];
   }
+
+  loadUsers()
+  {
+    this.user0001677Client.getAllUsers('').subscribe(
+      {
+        next:u =>
+        {
+          this.userDtos = u;
+          this.SelectedUserLoad();
+        }
+      } 
+     
+    );
+  }
+
+  SelectedUserLoad()
+  {
+    this.userDtos.forEach(u => 
+      {
+         this.selectedUsersDict[u.id!] = this.issueDataTransfer.users?.map(x=> x.id).includes(u.id)
+      });
+  }
+  loadIssues()
+  {
+    this.issueClient.getAllIssues('')
+                    .subscribe(comingIssues => this.issues = comingIssues);
+  }
+
 }
 
 

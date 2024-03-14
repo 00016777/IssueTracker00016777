@@ -1,6 +1,7 @@
+<p-toast></p-toast>
 <div class="issues">
-    <ng-container  *ngFor="let issue of issues">
-        <div (click)="openIssueDetails(issue)" [ngStyle]="{'box-shadow': '0px 10px 15px -5px '+ getColorIssuePriority(issue.priority)}"   class="issue">
+    <ng-container  *ngFor="let issue of service.issues">
+        <div (click)="openIssueDetails(issue.id)" [ngStyle]="{'box-shadow': '0px 10px 15px -5px '+ getColorIssuePriority(issue.priority)}"   class="issue">
             <div class="priority" [style.backgroundColor]="getColorIssuePriority(issue.priority)">
                 <h2>Priority: {{ getPriorityName(issue.priority) }}</h2>
             </div>

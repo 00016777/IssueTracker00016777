@@ -23,7 +23,7 @@ import { CommonModule } from '@angular/common';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MaterialExampleModule } from './material.example.module';
-
+import {MatListModule} from '@angular/material/list';
 const routes : Routes = [
    {
       path:'issues',
@@ -65,6 +65,7 @@ const routes : Routes = [
     MatFormFieldModule,
     MaterialExampleModule,
     MatNativeDateModule,
+    MatListModule
   ],
   providers: [
     {provide: API_BASE_URL, useValue : 'https://localhost:7069'},

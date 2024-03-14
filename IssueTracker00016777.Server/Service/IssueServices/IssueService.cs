@@ -13,22 +13,22 @@ public class IssueService(ApplicationDbContext dbContext,
 {
     public async Task<bool> AddOrRemoveUsersToIssues(AddOrDeleteUserFormIssue addOrDeleteUserFormIssue, CancellationToken token = default)
     {
-        var foundIssue = await dbContext.Issues.Include(x=> x.Users).SingleOrDefaultAsync(x=> x.Id == addOrDeleteUserFormIssue.IssueId, token);
+        var foundIssue = await dbContext.Issues.Include(x => x.Users).SingleOrDefaultAsync(x => x.Id == addOrDeleteUserFormIssue.IssueId, token);
         if (foundIssue == null) return false;
 
-        var foundUsers = await dbContext.Users.Where(x => addOrDeleteUserFormIssue.UserIds
-                                              .Contains(x.Id))
-                                              .ToListAsync(token);
-        if (foundUsers is null) return false;
-
-        if (addOrDeleteUserFormIssue.IsDeleted)
+        if (addOrDeleteUserFormIssue.UserIds == null || addOrDeleteUserFormIssue.UserIds.Length == 0)
         {
-            foundIssue.Users = foundIssue.Users.Where(x => !addOrDeleteUserFormIssue.UserIds.Contains(x.Id))
-                                               .ToList();
+            foundIssue.Users = null;
         }
         else
         {
+            var foundUsers = await dbContext.Users.Where(x => addOrDeleteUserFormIssue.UserIds
+                                             .Contains(x.Id))
+                                             .ToListAsync(token);
+            if (foundUsers is null) return false;
+
             foundIssue.Users = foundUsers;
+
         }
         dbContext.Issues.Update(foundIssue);
         return await dbContext.SaveChangesAsync(token) > 0;
@@ -36,26 +36,32 @@ public class IssueService(ApplicationDbContext dbContext,
     }
 
 
-    public async Task<bool> CreateOrUpdateIssueAsync(IssueCreateOrUpdateDto issueCreateOrUpdateDto, CancellationToken token = default)
+    public async Task<int> CreateOrUpdateIssueAsync(IssueCreateOrUpdateDto issueCreateOrUpdateDto, CancellationToken token = default)
     {
-        if(issueCreateOrUpdateDto == null) return false;
-       
+        if(issueCreateOrUpdateDto == null) return 0;
+
+        int issueId = 0;
+
         if(issueCreateOrUpdateDto.Id == 0)
         {
             var mappedIssue = mapper.Map<Issue00016777>(issueCreateOrUpdateDto);
             await dbContext.Issues.AddAsync(mappedIssue, token);
+            issueId = mappedIssue.Id;
+
         }
         else
         {
             var foundIssue = await dbContext.Issues.FindAsync(issueCreateOrUpdateDto.Id, token);
-            if (foundIssue == null) return false;
+            if (foundIssue == null) return 0;
 
             foundIssue.Title = issueCreateOrUpdateDto.Title;
             foundIssue.Priority = issueCreateOrUpdateDto.Priority;
             foundIssue.Description = issueCreateOrUpdateDto.Description;
             dbContext.Issues.Update(foundIssue);
+            issueId = foundIssue.Id;
         }
-        return await dbContext.SaveChangesAsync(token) > 0;
+        await dbContext.SaveChangesAsync(token);    
+        return issueId;
     }
 
   

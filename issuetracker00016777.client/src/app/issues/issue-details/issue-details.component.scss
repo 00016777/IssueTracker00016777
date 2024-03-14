@@ -8,27 +8,41 @@
 
         .issue-form
         {
+            margin-top: 20px;
             display: flex;
+            flex-direction: row;
             gap: 30px;
-
-        }
-        .close-button
-        {
-            width: 150px;
-            height: 50px;
-            align-self: flex-end;
-            border-radius: 10px;
-            background-color: rgb(214, 48, 70);
-            border: none;
-            color: #fff;
-            transition: all ease-in-out .10ms;
-            &:hover 
+            .left-side 
             {
-                background-color: rgb(178, 5, 5);
+                display: flex;
+                flex-direction: column;
+                width: 50%;
+            }
+            .right-side
+            {
+                width: 40%;
+                padding-left: 20px;
+                border-radius: 10px;
+                
+                .right-side-users
+                {   
+                    height: 370px;
+                    overflow-y: auto;
+                }
             }
         }
 
-
+        .actions 
+        {
+            margin-top: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            button 
+            {
+                width: 150px;
+            }
+        }
     }
    
 
@@ -39,11 +53,39 @@
 //   }
 :host::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline
 {
-        color: red;
+        color: green;
 }
 :host::ng-deep input.mat-input-element {
     color: rgb(0, 0, 0);
   }
 :host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline {
-    color: green !important;
+    color: red !important;
 }
+/* This applies to all scrollable elements */
+::-webkit-scrollbar {
+    width: 10px; /* width of the entire scrollbar */
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: rgb(180, 204, 255); /* color of the tracking area */
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(2, 51, 158); /*  /* color of the scroll thumb */
+    border-radius: 10px; /* roundness of the scroll thumb */
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(0, 14, 43); /*  /* color of the scroll thumb on hover */
+  }
+  :host::ng-deep.mat-list-base .mat-list-item-disabled
+  {
+    background: none;
+    color: black;
+  }
+  :host::ng-deep mat-label {
+    color: blue !important;
+  }
