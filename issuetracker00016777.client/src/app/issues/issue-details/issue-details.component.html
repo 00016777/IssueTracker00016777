@@ -15,8 +15,8 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>Priority</mat-label>
-                    <mat-select formControlName="priority">
-                       <mat-option required [value]="priority" *ngFor="let priority of service.getPriorityValues">
+                    <mat-select required formControlName="priority">
+                       <mat-option [value]="priority" *ngFor="let priority of service.getPriorityValues">
                             {{ service.getPriorityName(+priority) }}
                        </mat-option>    
                     </mat-select>
