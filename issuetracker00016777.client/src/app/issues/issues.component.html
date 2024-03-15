@@ -1,4 +1,10 @@
 <p-toast></p-toast>
+<div class="search-and-add-issue">
+    <mat-form-field  style="width: 350px; background-color: #fff;" appearance="outline">
+        <input type="text" matInput placeholder="Search issue" #searchInput/>
+    </mat-form-field>
+    <button (click)="createIssue()" mat-raised-button color="primary">Create issue</button>
+</div>
 <div class="issues">
     <ng-container  *ngFor="let issue of service.issues">
         <div (click)="openIssueDetails(issue.id)" [ngStyle]="{'box-shadow': '0px 10px 15px -5px '+ getColorIssuePriority(issue.priority)}"   class="issue">

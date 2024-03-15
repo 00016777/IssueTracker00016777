@@ -1,4 +1,13 @@
 :host {
+    .search-and-add-issue 
+    {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        height: 60px;
+        justify-content: center;
+        margin-top: 10px;
+    }
     .issues
     {
         display: flex;

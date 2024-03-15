@@ -542,7 +542,7 @@ export class User0001677Client implements IUser0001677Client {
 }
 
 export class IssueCreateOrUpdateDto implements IIssueCreateOrUpdateDto {
-    id?: number;
+    id?: number | undefined;
     title?: string;
     description?: string;
     priority?: IssuePriority00016777;
@@ -583,7 +583,7 @@ export class IssueCreateOrUpdateDto implements IIssueCreateOrUpdateDto {
 }
 
 export interface IIssueCreateOrUpdateDto {
-    id?: number;
+    id?: number | undefined;
     title?: string;
     description?: string;
     priority?: IssuePriority00016777;

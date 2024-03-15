@@ -41,6 +41,14 @@ export class UsersComponent implements OnInit {
   }
 
   onRowEditSave(user: UserDTO) {
+    if(!user ||
+       !user.fullName ||
+       !user.userName || 
+       !user.email || 
+       !user.birthDate)
+       {
+        
+       }
     this.user0001677Client.createOrUpdateUser(user)
                           .subscribe({
                             next:isSave =>

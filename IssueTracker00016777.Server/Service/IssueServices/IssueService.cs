@@ -38,11 +38,10 @@ public class IssueService(ApplicationDbContext dbContext,
 
     public async Task<int> CreateOrUpdateIssueAsync(IssueCreateOrUpdateDto issueCreateOrUpdateDto, CancellationToken token = default)
     {
-        if(issueCreateOrUpdateDto == null) return 0;
-
+        
         int issueId = 0;
 
-        if(issueCreateOrUpdateDto.Id == 0)
+        if(issueCreateOrUpdateDto.Id == 0 || issueCreateOrUpdateDto.Id == null)
         {
             var mappedIssue = mapper.Map<Issue00016777>(issueCreateOrUpdateDto);
             await dbContext.Issues.AddAsync(mappedIssue, token);

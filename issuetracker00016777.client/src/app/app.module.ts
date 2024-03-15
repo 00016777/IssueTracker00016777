@@ -24,6 +24,10 @@ import { MatNativeDateModule } from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MaterialExampleModule } from './material.example.module';
 import {MatListModule} from '@angular/material/list';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
+import {InputNumberModule} from 'primeng/inputnumber';
+import {InputMaskModule} from 'primeng/inputmask';
 const routes : Routes = [
    {
       path:'issues',
@@ -65,7 +69,11 @@ const routes : Routes = [
     MatFormFieldModule,
     MaterialExampleModule,
     MatNativeDateModule,
-    MatListModule
+    MatListModule,
+    MessagesModule,
+    MessageModule,
+    InputNumberModule,
+    InputMaskModule
   ],
   providers: [
     {provide: API_BASE_URL, useValue : 'https://localhost:7069'},

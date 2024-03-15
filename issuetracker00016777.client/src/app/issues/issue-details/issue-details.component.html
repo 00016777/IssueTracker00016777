@@ -26,7 +26,7 @@
                 <div class="right-side-users">
                     <mat-selection-list [(ngModel)]="selectedUserIds" #usersList [disabled]="issueForm.disabled" [ngModelOptions]="{standalone: true}">
                         <ng-container *ngFor="let user of service.userDtos">
-                            <mat-list-option [value]="user.id" [ngStyle]="{ 'color': this.service.selectedUsersDict[user.id!] ? 'blue' : 'black' }" [selected]="this.service.selectedUsersDict[user.id!]">
+                            <mat-list-option [value]="user.id" [ngStyle]="{ 'color': this.service.selectedUsersDict[user.id!] ? 'green' : 'red' }" [selected]="this.service.selectedUsersDict[user.id!]">
                                 {{ user.userName }}
                               </mat-list-option>
                         </ng-container>
@@ -45,7 +45,9 @@
             <ng-template #saveButton>
                 <button [disabled]="issueForm.invalid" color="primary" mat-raised-button (click)="saveIssue()">Save</button>
             </ng-template>
-            <button mat-raised-button color="warn">Remove</button>
+            <ng-container *ngIf="service.issueDataTransfer && service.issueDataTransfer.id">
+                <button (click)="deleteIssue()" mat-raised-button color="warn">Remove</button>
+            </ng-container>
         </div>
     </div>
 </mat-dialog-content>

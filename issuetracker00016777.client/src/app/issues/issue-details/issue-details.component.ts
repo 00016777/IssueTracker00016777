@@ -76,7 +76,27 @@ export class IssueDetailsComponent implements OnInit {
   }
 
 
-  
+  deleteIssue()
+  {
+    this.issueClient.deleteIssueById(this.service.issueDataTransfer.id)
+                    .subscribe(
+                      {
+                        next:isDeleted =>
+                        {
+                          this.service.loadIssues();
+                          if(isDeleted)
+                          {
+                            this.messageService.add({severity:'success', summary: 'Success', detail:'Issue successfully deleted'});
+                          }
+                          else 
+                          {
+                            this.messageService.add({severity:'error', summary: 'Error', detail:'Something went wrong!'});
+                          }
+                        }
+                      }
+                    )
+     this.issueDetailsDialog.close();
+  }
 
   editIssue()
   {

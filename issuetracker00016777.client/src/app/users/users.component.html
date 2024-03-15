@@ -2,6 +2,7 @@
 <p-table #userTable [value]="userDtos" dataKey="id" editMode="row" responsiveLayout="stack">
         <ng-template pTemplate="header">
             <tr>
+                <th>№</th>
                 <th>FullName</th>
                 <th>UserName</th>
                 <th>Email</th>
@@ -15,9 +16,12 @@
         <ng-template pTemplate="body" let-user let-editing="editing" let-ri="rowIndex">
             <tr [pEditableRow]="user">
                 <td>
+                    {{ ri + 1 }}
+                </td>
+                <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="user.fullName">
+                            <input class="ng-dirty ng-invalid mr-2" pInputText type="text" [(ngModel)]="user.fullName">
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{ user.fullName }}
@@ -27,7 +31,7 @@
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="user.userName" required>
+                            <input class="ng-dirty ng-invalid mr-2"  pInputText type="text" [(ngModel)]="user.userName">
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{ user.userName }}
@@ -37,7 +41,7 @@
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="user.email" required>
+                            <input class="ng-dirty ng-invalid mr-2" pInputText type="email" [(ngModel)]="user.email">
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{user.email}}
@@ -47,7 +51,7 @@
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="user.phoneNumber">
+                            <p-inputMask class="ng-dirty ng-invalid mr-2" [(ngModel)]="user.phoneNumber" placeholder="(998-90) 123-45-67" mask="(999-99) 999-99-99"></p-inputMask>
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{user.phoneNumber}}
@@ -57,7 +61,7 @@
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                        <p-dropdown [options]="userSexes" [(ngModel)]="user.sex00016777" [style]="{'width':'100%'}"></p-dropdown>
+                        <p-dropdown class="ng-dirty ng-invalid mr-2" [options]="userSexes" [(ngModel)]="user.sex00016777" [style]="{'width':'100%'}"></p-dropdown>
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{ getSexType(user.sex00016777)}}
@@ -67,7 +71,7 @@
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <p-calendar [(ngModel)]="user.birthDate"></p-calendar>
+                            <p-calendar class="ng-dirty ng-invalid mr-2" [required]="true" [(ngModel)]="user.birthDate"></p-calendar>
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{user.birthDate | date : 'dd.MM.yyyy' }}
