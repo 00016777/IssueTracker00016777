@@ -38,13 +38,13 @@ public class IssueService(ApplicationDbContext dbContext,
 
     public async Task<int> CreateOrUpdateIssueAsync(IssueCreateOrUpdateDto issueCreateOrUpdateDto, CancellationToken token = default)
     {
-        
         int issueId = 0;
 
-        if(issueCreateOrUpdateDto.Id == 0 || issueCreateOrUpdateDto.Id == null)
+        if (issueCreateOrUpdateDto.Id == 0 || issueCreateOrUpdateDto.Id == null)
         {
             var mappedIssue = mapper.Map<Issue00016777>(issueCreateOrUpdateDto);
             await dbContext.Issues.AddAsync(mappedIssue, token);
+            await dbContext.SaveChangesAsync(token);
             issueId = mappedIssue.Id;
 
         }
@@ -58,8 +58,8 @@ public class IssueService(ApplicationDbContext dbContext,
             foundIssue.Description = issueCreateOrUpdateDto.Description;
             dbContext.Issues.Update(foundIssue);
             issueId = foundIssue.Id;
+            await dbContext.SaveChangesAsync(token);
         }
-        await dbContext.SaveChangesAsync(token);    
         return issueId;
     }
 

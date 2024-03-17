@@ -15,9 +15,9 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<OnSaveInterceptor>();
 builder.Services.AddDbContext<ApplicationDbContext>((sp, o) =>
 {
-   //o.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))
-    o.UseInMemoryDatabase("IssueTracker")
-    .AddInterceptors(sp.GetRequiredService<OnSaveInterceptor>());
+    o.UseSqlServer(@"Server=LAPTOP-LI6UE79C\TEW_SQLEXPRESS;Database=IssueTracker16777;Trusted_Connection=True;TrustServerCertificate=True;");
+    //o.UseInMemoryDatabase("IssueTracker");
+    o.AddInterceptors(sp.GetRequiredService<OnSaveInterceptor>());
 });
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
