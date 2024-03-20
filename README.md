@@ -26,3 +26,7 @@ To get started with the project, follow these steps:
 ## Additional Modules
 
 This project utilizes additional modules as provided in the report. Please refer to the report for more information.
+## Calculations
+If Id=16777, then:
+16777 ÷ 20 = 838 (17 remainder)
+Where 17 represents an issue tracker.
